@@ -1,0 +1,19 @@
+/*
+ * Jimmy Blaszkiewicz
+ * Metro Kreme . gif
+ * Testing CornClicker.java
+ */
+package cornclicker;
+import javax.swing.JFrame;
+
+public class CornClickerRun {
+    public static void main(String[] args)
+    {
+        CornClicker buttonFrame = new CornClicker();
+        buttonFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        buttonFrame.setSize(440,550);
+        buttonFrame.setResizable(false);
+        buttonFrame.setVisible(true);
+    }//end main
+    
+}//end class CornClickerRun
