@@ -13,6 +13,7 @@ public class CornClickerRun {
         buttonFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         buttonFrame.setSize(440,550);
         buttonFrame.setResizable(false);
+        buttonFrame.setLocationRelativeTo(null);
         buttonFrame.setVisible(true);
     }//end main
     
