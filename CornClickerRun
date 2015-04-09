@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 public class CornClickerRun {
     public static void main(String[] args)
     {
+        MetroSound sound = new MetroSound("CornTheme.wav");
         CornClicker buttonFrame = new CornClicker();
         buttonFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         buttonFrame.setSize(440,550);
