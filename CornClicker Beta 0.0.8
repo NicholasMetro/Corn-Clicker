@@ -23,16 +23,15 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-
 public class CornClicker extends JFrame {
-    private final JRButton1 grow;
-    private final JRButton1 eat;
-    private final JRButton1 sell;
-    private final JRButton1 upgrades;
-    private final JRButton1 store;
-    private final JRButton1 cheats;
+    private final JimButton grow;
+    private final JimButton eat;
+    private final JimButton sell;
+    private final JimButton upgrades;
+    private final JimButton store;
+    private final JimButton cheats;
     
-    private static JRButton1 poppingCorn;
+    private static JimButton poppingCorn;
     
     private final JPanel buttonPanel;
     private final JPanel labelPanel;
@@ -62,22 +61,22 @@ public class CornClicker extends JFrame {
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(3,2));
         
-        grow = new JRButton1("Grow Corn",w,h);
+        grow = new JimButton("Grow Corn",w,h);
         buttonPanel.add (grow);
         
-        eat = new JRButton1 ("Eat the corn",w,h);
+        eat = new JimButton ("Eat the corn",w,h);
         buttonPanel.add (eat);
         
-        sell = new JRButton1 ("Sell your product",w,h);
+        sell = new JimButton ("Sell your product",w,h);
         buttonPanel.add (sell);
         
-        upgrades = new JRButton1 ("Upgrades",w,h);
+        upgrades = new JimButton ("Upgrades",w,h);
         buttonPanel.add (upgrades);
         
-        store = new JRButton1 ("Store",w,h);
+        store = new JimButton ("Store",w,h);
         buttonPanel.add (store);
         
-        cheats = new JRButton1 ("Enter a Cheat Code.",w,h);
+        cheats = new JimButton ("Enter a Cheat Code.",w,h);
         buttonPanel.add (cheats);
         
         
@@ -182,7 +181,7 @@ public class CornClicker extends JFrame {
         public void actionPerformed(ActionEvent event)
         {
             corn = corn + growAmount;
-            
+            MetroSound sound = new MetroSound("click.wav");
         }//end actionPerfomed method
         
     }//end CornHandler Class
@@ -192,6 +191,7 @@ public class CornClicker extends JFrame {
         public void actionPerformed(ActionEvent event)
         {
             if (corn > 0){
+                MetroSound sound = new MetroSound("chomp.wav");
                 corn--;
                 
                 int randomInt = randomGenerator.nextInt(100);
@@ -221,6 +221,7 @@ public class CornClicker extends JFrame {
         public void actionPerformed(ActionEvent event)
         {
             if (corn >0){
+                MetroSound sound = new MetroSound("click.wav");
                 corn = corn - sellAmount;
                 money = money + (sellAmount * sellPrice);
                 outputLabel.setText("You sell "+ sellAmount +" corns for $" + sellPrice + " a pop.");
@@ -255,21 +256,21 @@ public class CornClicker extends JFrame {
     
     public class UpgradeFrame extends JFrame
     {
-        private final JRButton1 marry;
-        private final JRButton1 move;
+        private final JimButton marry;
+        private final JimButton move;
         
         public UpgradeFrame()
         {
             super("Upgrades");
             setLayout(new FlowLayout());
             
-            marry = new JRButton1("Marry a corn enthusiast: $250",w,h);
+            marry = new JimButton("Marry a corn enthusiast: $250",w,h);
             add (marry);
             
-            move = new JRButton1("Move to Nebraska: $250",w,h);
+            move = new JimButton("Move to Nebraska: $250",w,h);
             add (move);
             
-            poppingCorn = new JRButton1("Make a new strain of corn: $50",w,h);
+            poppingCorn = new JimButton("Make a new strain of corn: $50",w,h);
             add(poppingCorn);
             
             MarryHandler handler1 = new MarryHandler();
@@ -290,6 +291,7 @@ public class CornClicker extends JFrame {
         public void actionPerformed (ActionEvent event)
         {
             if (money >= 250 && !moved){
+                MetroSound sound = new MetroSound("moo.wav");
                 growAmount = growAmount + 10;
                 outputLabel.setText("You can now grow " + growAmount + " corns at a time.");
                 moved = true;
@@ -309,6 +311,7 @@ public class CornClicker extends JFrame {
         {
             if (money >=  250 && !married)
             {
+                MetroSound sound = new MetroSound("wedding bells.wav");
                 sellAmount = sellAmount + 10;
                 married = true;
                 money = money - 250;
@@ -333,6 +336,7 @@ public class CornClicker extends JFrame {
         {
             if(money>=poppedValue)
             {
+                MetroSound sound = new MetroSound("pop.wav");
                 sellPrice = sellPrice + poppedChange;
                 money = money - poppedValue;
                 outputLabel.setText("You have created a new strain of corn");
@@ -352,24 +356,25 @@ public class CornClicker extends JFrame {
         public void actionPerformed(ActionEvent event)
         {
             UpgradeFrame upgradeFrame = new UpgradeFrame();
-            upgradeFrame.setSize(440,150);
+            upgradeFrame.setSize(440,160);
+            upgradeFrame.setLocationRelativeTo(null);
             upgradeFrame.setVisible(true);
             upgradeFrame.setResizable(false);
         }//end actionPerformed
     }//end UpgradeHandler class
     public class StoreFrame extends JFrame
     {
-        private final JRButton1 cornDealer;
-        private final JRButton1 cornFarmer;
+        private final JimButton cornDealer;
+        private final JimButton cornFarmer;
         public StoreFrame()
         {
             super("Store");
             setLayout(new FlowLayout());
             
-            cornDealer = new JRButton1("Hire a Corn Salesman: $25",w,h);
+            cornDealer = new JimButton("Hire a Corn Salesman: $25",w,h);
             add (cornDealer);
             
-            cornFarmer = new JRButton1("Hire a Corn Farmer: $25",w,h);
+            cornFarmer = new JimButton("Hire a Corn Farmer: $25",w,h);
             add(cornFarmer);
             
             DealerHandler handler1 = new DealerHandler();
@@ -388,10 +393,11 @@ public class CornClicker extends JFrame {
             
             if(money >= 25)
             {
+                MetroSound sound = new MetroSound("cha-ching.wav");
                 sps = sps + 1;
                 outputLabel.setText("You have purchased a Salesman");
                 money = money - 25;
-                MetroSound sound = new MetroSound("ClickSound");
+                
             }//end if
             else
                 outputLabel.setText("You cannot afford this right now.");
@@ -403,6 +409,7 @@ public class CornClicker extends JFrame {
         {
             if(money >= 25)
             {
+                MetroSound sound = new MetroSound("cha-ching.wav");
                 cps = cps + 1;
                 outputLabel.setText("You have purchased a Farmer");
                 money = money - 25;
@@ -418,6 +425,7 @@ public class CornClicker extends JFrame {
         {
             StoreFrame storeFrame = new StoreFrame();
             storeFrame.setSize(440,150);
+            storeFrame.setLocationRelativeTo(null);
             storeFrame.setResizable(false);
             storeFrame.setVisible(true);
         }//end actionPerformed
