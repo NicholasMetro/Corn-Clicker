@@ -24,7 +24,7 @@ import javax.swing.JButton;
  * Rename JRButton1 to JimButton
  */
 
-class JRButton1 extends JButton {
+class JimButton extends JButton {
      
     private int w ;
     private int h ;
@@ -36,7 +36,7 @@ class JRButton1 extends JButton {
     private double arcw;
     private double arch;
      
-    public JRButton1(String name, int w, int h){
+    public JimButton(String name, int w, int h){
          
         super(name);
         setContentAreaFilled(false);
