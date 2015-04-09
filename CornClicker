@@ -16,11 +16,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.awt.FlowLayout; 
 import java.awt.GridLayout;
+import java.text.DecimalFormat;
 import java.util.Scanner;
 import javax.swing.JFrame; 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
 
 public class CornClicker extends JFrame {
     private final JRButton1 grow;
@@ -49,6 +51,8 @@ public class CornClicker extends JFrame {
     
     private int poppedValue = 50;
     private int poppedChange = 5;
+    
+    private DecimalFormat form = new DecimalFormat("#0.00");
     
     public CornClicker()
     {
@@ -128,53 +132,49 @@ public class CornClicker extends JFrame {
         new Timer1();
         
     }//end of cornClicker constructor
-    int corn = 0;
-    int money = 0;
+    String formattedCorn;
+    String formattedMoney;
+    double corn = 0;
+    double money = 0;
     int sellPrice = 1;
     int sellAmount = 1;
     int growAmount = 1;
-    int cps = 0;
+    double cps = 0;
     int cornQuality = 0;
-    int sps = 0;
+    double sps = 0;
+    int time = 90;
     //Timer to control SellPerSecond and CornPerSecond
     public class Timer1 extends JFrame{
         private final Timer timer;
-        //private final Timer timerTwo;
+        
         public Timer1(){
             timer = new Timer(1, new TimerListener());
             timer.start();
-            //timerTwo = new Timer(1000, new TimerTwoListener());
-            //timerTwo.start();
-        }
+        }//end Timer1 Constructor
         
         private class TimerListener implements ActionListener
-        {   
-           int counter = 0;
+        {  
            public void actionPerformed(ActionEvent event)
             {
-                
-                if(counter == 1000)
+               
+                corn = corn + cps / time;
+                if(corn - sps >= 0)
                 {
-                    corn = corn + cps;
-                    if(corn - sps >= 0)
-                    {
-                        money = money + (sps * sellPrice);
-                        corn = corn - sps;
-                    }//end if
-                    counter = 0;
+                    money = money + (sps * sellPrice)/time;
+                    corn = corn - sps / time;
                 }//end if
-                counter++;
                 
-                cornLabel.setText("Corn: " + corn);
-                moneyLabel.setText("Money: $" + money);
+                
+                cornLabel.setText("Corn: " + form.format(corn));
+                moneyLabel.setText("Money: $" + form.format(money));
                 sellPerClickLabel.setText("Sell Per Click: " + sellAmount);
                 growPerClickLabel.setText("Grow Per Click: " + growAmount);
                 moneyPerCornLabel.setText("Sell Price: $" + sellPrice);
                 sellPerSecondLabel.setText("Sell Per Second: " + sps);
                 growPerSecondLabel.setText("Grow Per Second: " + cps);
                 
-            }
-        }
+            }//end actionPerformed method
+        }//end TimerListener class
     }//end of class Timer
 
     private class CornHandler implements ActionListener
@@ -188,29 +188,30 @@ public class CornClicker extends JFrame {
     }//end CornHandler Class
     private class EatHandler implements ActionListener
     {  
+        Random randomGenerator = new Random();
         public void actionPerformed(ActionEvent event)
         {
             if (corn > 0){
                 corn--;
-                Random randomGenerator = new Random();
+                
                 int randomInt = randomGenerator.nextInt(100);
                 if (randomInt >= 90){
-                    outputLabel.setText("You get so full that you lose the rest of your corn.");
+                    outputLabel.setText("You lose the rest of your corn.");
                     corn = 0;
-                }
+                }//end if
                 else if (randomInt >= 80){
                     try 
                     {
                         outputLabel.setText("You pass out.");
                         Thread.sleep(3000);
-                    } 
+                    }//end try 
                     catch (InterruptedException ex) 
                     {
                         Logger.getLogger(CornClicker.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
+                    }//end catch
+                }//end else if
                 
-            }
+            }//end if
             if (corn == 0)
                 outputLabel.setText("You are out of corn.");
         }//end actionPerfomed method  
@@ -220,11 +221,11 @@ public class CornClicker extends JFrame {
         public void actionPerformed(ActionEvent event)
         {
             if (corn >0){
-                corn --;
+                corn = corn - sellAmount;
                 money = money + (sellAmount * sellPrice);
                 outputLabel.setText("You sell "+ sellAmount +" corns for $" + sellPrice + " a pop.");
                 
-            }
+            }//end if
             if (corn == 0)
                 outputLabel.setText("You are out of corn.");
         }//end actionPerformed method
@@ -242,15 +243,15 @@ public class CornClicker extends JFrame {
             {
                 money = money + 25000;
                 corn = corn + 25000;
-            }
+            }//end if
             else
             {
                 outputLabel.setText("You are bad at cheating.");
                 money = 0;
                 corn = 0;
-            }
-        }
-    }
+            }//end else
+        }//end actionPerformed
+    }//end CheatHandler class
     
     public class UpgradeFrame extends JFrame
     {
@@ -293,10 +294,10 @@ public class CornClicker extends JFrame {
                 outputLabel.setText("You can now grow " + growAmount + " corns at a time.");
                 moved = true;
                 money = money - 250;
-            }
+            }//end if
             else if (money < 250){
                 outputLabel.setText("You cannot afford that right now.");
-            }
+            }//end else if
             else if (moved)
                 outputLabel.setText("You already live in Nebraska.");
         }//end of actionPerformed method
@@ -311,21 +312,20 @@ public class CornClicker extends JFrame {
                 sellAmount = sellAmount + 10;
                 married = true;
                 money = money - 250;
-            }
-                    else if (money < 250){
+            }//end if
+            else if (money < 250){
                 outputLabel.setText("Unable to pay off family.");
                 money = 0;
                 corn = 0;
-                
-            }
-                    else  if (married){
+            }//end else if
+            else  if (married){
                 outputLabel.setText("Cheating is bad");
                 money = 0;
                 married = false;
                 sellAmount = sellAmount - 10;
-            }
-        }
-    }
+            }//end else if
+        }//end actionPerformed
+    }//end marryHandler class
     
     private class PoppingHandler implements ActionListener
     {
@@ -340,13 +340,13 @@ public class CornClicker extends JFrame {
                 poppedValue *= 2;
                 poppedChange *= 1.5;
                 poppingCorn.setText("Make a new strain of corn: $" + poppedValue);
-            }
+            }//end if
             else if(money<poppedValue)
             {
                 outputLabel.setText("You cannot afford that right now.");
-            }
-        }
-    }
+            }//end else if
+        }//end actionPerformed
+    }//end PoppingHandler class
     private class UpgradeHandler implements ActionListener
     {
         public void actionPerformed(ActionEvent event)
@@ -355,8 +355,8 @@ public class CornClicker extends JFrame {
             upgradeFrame.setSize(440,150);
             upgradeFrame.setVisible(true);
             upgradeFrame.setResizable(false);
-        }
-    }
+        }//end actionPerformed
+    }//end UpgradeHandler class
     public class StoreFrame extends JFrame
     {
         private final JRButton1 cornDealer;
@@ -378,8 +378,8 @@ public class CornClicker extends JFrame {
             FarmerHandler handler2 = new FarmerHandler();
             cornFarmer.addActionListener(handler2);
             
-        }
-    }
+        }//end storeframe constructor
+    }//end class storeframe
     private class DealerHandler implements ActionListener
     {
         
@@ -392,11 +392,11 @@ public class CornClicker extends JFrame {
                 outputLabel.setText("You have purchased a Salesman");
                 money = money - 25;
                 MetroSound sound = new MetroSound("ClickSound");
-            }
+            }//end if
             else
                 outputLabel.setText("You cannot afford this right now.");
-        }
-    }
+        }//end actionPerformed
+    }//end dealerHandler
     private class FarmerHandler implements ActionListener
     {
         public void actionPerformed(ActionEvent event)
@@ -406,12 +406,12 @@ public class CornClicker extends JFrame {
                 cps = cps + 1;
                 outputLabel.setText("You have purchased a Farmer");
                 money = money - 25;
-            }
+            }//end if
             else{
                 outputLabel.setText("You cannot afford that right now.");
-            }
-        }
-    }
+            }//end else
+        }//actionperformed
+    }//end farmerhandler
     private class StoreHandler implements ActionListener
     {
         public void actionPerformed(ActionEvent event)
@@ -420,6 +420,6 @@ public class CornClicker extends JFrame {
             storeFrame.setSize(440,150);
             storeFrame.setResizable(false);
             storeFrame.setVisible(true);
-        }
-    }
-}//end CornClicker
+        }//end actionPerformed
+    }//end storeHandler
+}//end CornClicker class
