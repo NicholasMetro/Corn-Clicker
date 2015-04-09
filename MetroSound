@@ -3,7 +3,7 @@
 2/27/15
 A class to play audio from files in the package
  */
-package HearingTest;
+package cornclicker;
 
 import java.io.InputStream;
 import sun.audio.AudioPlayer;
