@@ -16,7 +16,6 @@ public class MetroSound
     public MetroSound(String file)
     {
         sound = file;
-        playSound(sound);
     }//end contructor
     
     public void playSound(String soundLoc)
